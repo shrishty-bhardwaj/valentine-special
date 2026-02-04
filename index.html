@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Surprise</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --dark-pink: #c9184a;
+            --btn-pink: #ff6b81;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--soft-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .page { display: none; animation: fadeIn 0.6s ease; }
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: var(--dark-pink); font-size: 2.2rem; margin-bottom: 10px; }
+        .subtitle { color: #777; margin-bottom: 30px; font-size: 1rem; }
+
+        .btn-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+        }
+
+        button {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--primary-pink);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        button:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-2px);
+        }
+
+        #noBtn {
+            background-color: #ffb3c1;
+        }
+
+        /* Image Grid Styles */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid var(--primary-pink);
+        }
+
+        .list-item {
+            background: #fff5f5;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            text-align: left;
+            border-left: 5px solid var(--primary-pink);
+            font-size: 0.95rem;
+        }
+
+        .envelope { font-size: 5rem; cursor: pointer; display: inline-block; transition: 0.3s; }
+        .envelope:hover { transform: scale(1.1) rotate(5deg); }
+        .cartoon-img { width: 160px; margin: 20px 0; border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="page1" class="page active">
+            <h1 id="mainTitle">Will you be my Valentine? 💖</h1>
+            <p id="mainSubtitle" class="subtitle">Official invite from your favorite person...</p>
+            <div class="btn-wrap">
+                <button id="yesBtn" onclick="nextPage(2)">YES! 💜</button>
+                <button id="noBtn" onclick="handleNoClick()">No</button>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <h1>Good choice babu 😍</h1>
+            <img src="https://i.pinimg.com/originals/32/64/bc/3264bcc47ee47ebbdd441f9f1d203542.gif" class="cartoon-img">
+            <p>You just unlocked unlimited hugs, kisses, and cuddles!</p>
+            <button onclick="nextPage(3)">See our dates ✨</button>
+        </div>
+
+        <div id="page3" class="page">
+            <h1>Our Virtual Date Ideas 📱</h1>
+            <div class="list-item">🍿 Netflix party + video call (I let you pick... maybe)</div>
+            <div class="list-item">🍕 Order food & judge eating habits</div>
+            <div class="list-item">🎵 Late night talks & music sessions</div>
+            <div class="list-item">🎮 Play games & watch you absolutely destroy me</div>
+            <button style="margin-top:20px" onclick="nextPage(4)">I have a secret... 🤫</button>
+        </div>
+
+        <div id="page4" class="page">
+            <h1>A Secret Note For You 💌</h1>
+            <p>Click the envelope to open it...</p>
+            <div class="envelope" onclick="nextPage(5)">✉️</div>
+        </div>
+
+        <div id="page5" class="page">
+            <h1>My Favorite Person ✨</h1>
+            <div class="image-grid">
+                <img src="pic7.jpeg" alt="Image 1">
+                <img src="pic2.jpeg" alt="Image 2">
+                <img src="pic5.jpeg" alt="Image 3">
+                <img src="pic4.jpeg" alt="Image 4">
+            </div>
+            <p style="margin-top:20px; font-weight:bold; color:var(--dark-pink);">I love you forever! ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        let noCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const title = document.getElementById('mainTitle');
+        const subtitle = document.getElementById('mainSubtitle');
+
+        const noMessages = [
+            "Think again.. 🥺",
+            "One more try.. 🙄",
+            "Last try! 😤"
+        ];
+
+        function handleNoClick() {
+            if (noCount < 3) {
+                title.innerText = noMessages[noCount];
+                subtitle.innerText = "Are you really sure about that?";
+                let currentScale = 1 + (noCount + 1) * 0.6;
+                yesBtn.style.transform = `scale(${currentScale})`;
+                noCount++;
+            }
+            if (noCount === 3) {
+                noBtn.style.display = 'none';
+                title.innerText = "Okay, you have no choice now! 😂";
+            }
+        }
+
+        function nextPage(num) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + num).classList.add('active');
+        }
+    </script>
+</body>
+</html>
